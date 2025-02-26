@@ -6,7 +6,11 @@ import { Question, QuestionType } from "./interfaces/question";
  * that are `published`.
  */
 export function getPublishedQuestions(questions: Question[]): Question[] {
-    return [];
+    let publishedQ: Question[] = [...questions];
+
+    publishedQ = publishedQ.filter((qstn: Question): boolean => qstn.published);
+
+    return publishedQ;
 }
 
 /**
@@ -15,7 +19,16 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  * `expected`, and an empty array for its `options`.
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
-    return [];
+    let nonEmptyQ: Question[] = [...questions];
+
+    nonEmptyQ = nonEmptyQ.filter(
+        (qstn: Question): boolean =>
+            qstn.body !== "" ||
+            qstn.expected !== "" ||
+            qstn.options.length !== 0,
+    );
+
+    return nonEmptyQ;
 }
 
 /***
@@ -24,9 +37,20 @@ export function getNonEmptyQuestions(questions: Question[]): Question[] {
  */
 export function findQuestion(
     questions: Question[],
-    id: number
+    id: number,
 ): Question | null {
-    return null;
+    let foundQ: Question;
+
+    [...questions].map(
+        (qstn: Question): Question => (qstn.id === id ? (foundQ = qstn) : qstn),
+    );
+
+    if (typeof foundQ === "undefined") {
+        //STOP SAYING THIS IS AN ERROR VSCODE. THIS IS INTENTIONAL RAAAAGHHHHH
+        return null;
+    } else {
+        return foundQ;
+    }
 }
 
 /**
@@ -34,7 +58,13 @@ export function findQuestion(
  * with the given `id`.
  */
 export function removeQuestion(questions: Question[], id: number): Question[] {
-    return [];
+    let removedQ: Question[] = [...questions];
+
+    if (findQuestion(removedQ, id) !== null) {
+        removedQ = removedQ.filter((qstn: Question): boolean => qstn.id !== id);
+    }
+
+    return removedQ;
 }
 
 /***
@@ -42,21 +72,31 @@ export function removeQuestion(questions: Question[], id: number): Question[] {
  * questions, as an array.
  */
 export function getNames(questions: Question[]): string[] {
-    return [];
+    let q: Question[] = [...questions];
+    let qNames: string[];
+
+    qNames = q.map((ques: Question): string => ques.name);
+
+    return qNames;
 }
 
 /***
  * Consumes an array of questions and returns the sum total of all their points added together.
  */
 export function sumPoints(questions: Question[]): number {
-    return 0;
+    let q: Question[] = [...questions]; //I probally dont need this every time, but its good practice
+    let pointsSum: number = 0;
+
+    q.map((ques: Question): number => (pointsSum += ques.points));
+
+    return pointsSum;
 }
 
 /***
  * Consumes an array of questions and returns the sum total of the PUBLISHED questions.
  */
 export function sumPublishedPoints(questions: Question[]): number {
-    return 0;
+    return sumPoints(getPublishedQuestions([...questions]));
 }
 
 /***
@@ -114,7 +154,7 @@ export function addNewQuestion(
     questions: Question[],
     id: number,
     name: string,
-    type: QuestionType
+    type: QuestionType,
 ): Question[] {
     return [];
 }
@@ -127,7 +167,7 @@ export function addNewQuestion(
 export function renameQuestionById(
     questions: Question[],
     targetId: number,
-    newName: string
+    newName: string,
 ): Question[] {
     return [];
 }
@@ -142,7 +182,7 @@ export function renameQuestionById(
 export function changeQuestionTypeById(
     questions: Question[],
     targetId: number,
-    newQuestionType: QuestionType
+    newQuestionType: QuestionType,
 ): Question[] {
     return [];
 }
@@ -161,7 +201,7 @@ export function editOption(
     questions: Question[],
     targetId: number,
     targetOptionIndex: number,
-    newOption: string
+    newOption: string,
 ): Question[] {
     return [];
 }
@@ -175,7 +215,7 @@ export function editOption(
 export function duplicateQuestionInArray(
     questions: Question[],
     targetId: number,
-    newId: number
+    newId: number,
 ): Question[] {
     return [];
 }
