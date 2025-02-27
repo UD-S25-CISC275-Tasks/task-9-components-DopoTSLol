@@ -296,18 +296,10 @@ export function duplicateQuestionInArray(
     targetId: number,
     newId: number,
 ): Question[] {
-    let clonedQuestion: Question = {
-        ...findQuestion([...questions], targetId),
-    };
+    let duplicateQ: Question[] = [...questions];
+    let index = duplicateQ.findIndex((ques) => ques.id === targetId);
+    let clonedQ: Question = duplicateQuestion(newId, duplicateQ[index]);
+    duplicateQ.splice(index + 1, 0, clonedQ);
 
-    clonedQuestion = { ...duplicateQuestion(newId, clonedQuestion) };
-    let newArr: Question[] = [...questions];
-    let index = 0,
-        i = 0;
-
-    newArr.map((ques: Question): number =>
-        ques.id === targetId ? (index = i) : i++,
-    );
-
-    return newArr.splice(index, 0, clonedQuestion);
+    return [...duplicateQ];
 }
