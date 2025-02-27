@@ -1,5 +1,6 @@
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
+import { duplicateQuestion, makeBlankQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
@@ -170,7 +171,17 @@ export function publishAll(questions: Question[]): Question[] {
  * are the same type. They can be any type, as long as they are all the SAME type.
  */
 export function sameType(questions: Question[]): boolean {
-    return false;
+    let allSameType: boolean = true;
+    if (questions.length !== 0) {
+        let firstQuestionType: QuestionType = questions[0].type;
+
+        [...questions].map(
+            (ques: Question): boolean =>
+                (allSameType = allSameType && ques.type === firstQuestionType),
+        );
+    }
+
+    return allSameType;
 }
 
 /***
@@ -184,7 +195,7 @@ export function addNewQuestion(
     name: string,
     type: QuestionType,
 ): Question[] {
-    return [];
+    return [...questions, makeBlankQuestion(id, name, type)];
 }
 
 /***
@@ -197,7 +208,10 @@ export function renameQuestionById(
     targetId: number,
     newName: string,
 ): Question[] {
-    return [];
+    return [...questions].map(
+        (ques: Question): Question =>
+            ques.id === targetId ? { ...ques, name: newName } : ques,
+    );
 }
 
 /***
@@ -212,7 +226,26 @@ export function changeQuestionTypeById(
     targetId: number,
     newQuestionType: QuestionType,
 ): Question[] {
-    return [];
+    if (findQuestion(questions, targetId) !== null) {
+        let changedQues: Question = findQuestion(questions, targetId);
+
+        if (changedQues.type === "multiple_choice_question") {
+            changedQues = {
+                ...changedQues,
+                type: newQuestionType,
+                options: [],
+            };
+        } else {
+            changedQues = { ...changedQues, type: newQuestionType };
+        }
+
+        return [...questions].map(
+            (ques: Question): Question =>
+                targetId === ques.id ? { ...changedQues } : ques,
+        );
+    } else {
+        return [...questions];
+    }
 }
 
 /**
@@ -231,7 +264,25 @@ export function editOption(
     targetOptionIndex: number,
     newOption: string,
 ): Question[] {
-    return [];
+    if (findQuestion(questions, targetId) !== null) {
+        let changedQues: Question = {
+            ...findQuestion([...questions], targetId),
+        };
+
+        if (targetOptionIndex === -1) {
+            changedQues.options = [...changedQues.options.concat(newOption)];
+        } else {
+            changedQues.options = [...changedQues.options];
+            changedQues.options[targetOptionIndex] = newOption;
+        }
+
+        return [...questions].map(
+            (ques: Question): Question =>
+                targetId === ques.id ? { ...changedQues } : ques,
+        );
+    } else {
+        return [...questions];
+    }
 }
 
 /***
@@ -245,5 +296,18 @@ export function duplicateQuestionInArray(
     targetId: number,
     newId: number,
 ): Question[] {
-    return [];
+    let clonedQuestion: Question = {
+        ...findQuestion([...questions], targetId),
+    };
+
+    clonedQuestion = { ...duplicateQuestion(newId, clonedQuestion) };
+    let newArr: Question[] = [...questions];
+    let index = 0,
+        i = 0;
+
+    newArr.map((ques: Question): number =>
+        ques.id === targetId ? (index = i) : i++,
+    );
+
+    return newArr.splice(index, 0, clonedQuestion);
 }
