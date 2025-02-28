@@ -40,13 +40,13 @@ export function findQuestion(
     questions: Question[],
     id: number,
 ): Question | null {
-    let foundQ: Question;
+    let foundQ: Question | undefined;
 
     [...questions].map(
         (qstn: Question): Question => (qstn.id === id ? (foundQ = qstn) : qstn),
     );
 
-    if (typeof foundQ === "undefined") {
+    if (foundQ === undefined) {
         //STOP SAYING THIS IS AN ERROR VSCODE. THIS IS INTENTIONAL RAAAAGHHHHH
         return null;
     } else {
@@ -226,22 +226,24 @@ export function changeQuestionTypeById(
     targetId: number,
     newQuestionType: QuestionType,
 ): Question[] {
-    if (findQuestion(questions, targetId) !== null) {
-        let changedQues: Question = findQuestion(questions, targetId);
+    let changedQues: Question | null = findQuestion(questions, targetId);
+
+    if (changedQues !== null) {
+        let changedQues2: Question;
 
         if (changedQues.type === "multiple_choice_question") {
-            changedQues = {
+            changedQues2 = {
                 ...changedQues,
                 type: newQuestionType,
                 options: [],
             };
         } else {
-            changedQues = { ...changedQues, type: newQuestionType };
+            changedQues2 = { ...changedQues, type: newQuestionType };
         }
 
         return [...questions].map(
             (ques: Question): Question =>
-                targetId === ques.id ? { ...changedQues } : ques,
+                targetId === ques.id ? changedQues2 : ques,
         );
     } else {
         return [...questions];
@@ -264,22 +266,25 @@ export function editOption(
     targetOptionIndex: number,
     newOption: string,
 ): Question[] {
-    if (findQuestion(questions, targetId) !== null) {
-        let changedQues: Question = {
-            ...findQuestion([...questions], targetId),
-        };
+    let changedQues: Question | null = findQuestion(questions, targetId);
+
+    if (changedQues !== null) {
+        let changedQues2: Question;
+        changedQues2 = { ...changedQues };
 
         if (targetOptionIndex === -1) {
-            changedQues.options = [...changedQues.options.concat(newOption)];
+            changedQues2.options = [...changedQues.options.concat(newOption)];
         } else {
-            changedQues.options = [...changedQues.options];
-            changedQues.options[targetOptionIndex] = newOption;
+            changedQues2.options = [...changedQues.options];
+            changedQues2.options[targetOptionIndex] = newOption;
         }
 
-        return [...questions].map(
+        let newArr: Question[] = [...questions].map(
             (ques: Question): Question =>
-                targetId === ques.id ? { ...changedQues } : ques,
+                targetId === ques.id ? changedQues2 : ques,
         );
+
+        return newArr;
     } else {
         return [...questions];
     }
