@@ -26,7 +26,7 @@ export function getNonEmptyQuestions(questions: Question[]): Question[] {
         (qstn: Question): boolean =>
             qstn.body !== "" ||
             qstn.expected !== "" ||
-            qstn.options.length !== 0,
+            qstn.options.length !== 0
     );
 
     return nonEmptyQ;
@@ -38,12 +38,12 @@ export function getNonEmptyQuestions(questions: Question[]): Question[] {
  */
 export function findQuestion(
     questions: Question[],
-    id: number,
+    id: number
 ): Question | null {
     let foundQ: Question | undefined;
 
     [...questions].map(
-        (qstn: Question): Question => (qstn.id === id ? (foundQ = qstn) : qstn),
+        (qstn: Question): Question => (qstn.id === id ? (foundQ = qstn) : qstn)
     );
 
     if (foundQ === undefined) {
@@ -134,7 +134,7 @@ export function toCSV(questions: Question[]): string {
                     "," +
                     ques.points +
                     "," +
-                    ques.published,
+                    ques.published
             )
             .join("\n");
     return questionsCSV;
@@ -151,8 +151,8 @@ export function makeAnswers(questions: Question[]): Answer[] {
             questionId: ques.id,
             text: "",
             submitted: false,
-            correct: false,
-        }),
+            correct: false
+        })
     );
 }
 
@@ -162,7 +162,7 @@ export function makeAnswers(questions: Question[]): Answer[] {
  */
 export function publishAll(questions: Question[]): Question[] {
     return [...questions].map(
-        (ques: Question): Question => ({ ...ques, published: true }),
+        (ques: Question): Question => ({ ...ques, published: true })
     );
 }
 
@@ -177,7 +177,7 @@ export function sameType(questions: Question[]): boolean {
 
         [...questions].map(
             (ques: Question): boolean =>
-                (allSameType = allSameType && ques.type === firstQuestionType),
+                (allSameType = allSameType && ques.type === firstQuestionType)
         );
     }
 
@@ -193,7 +193,7 @@ export function addNewQuestion(
     questions: Question[],
     id: number,
     name: string,
-    type: QuestionType,
+    type: QuestionType
 ): Question[] {
     return [...questions, makeBlankQuestion(id, name, type)];
 }
@@ -206,11 +206,11 @@ export function addNewQuestion(
 export function renameQuestionById(
     questions: Question[],
     targetId: number,
-    newName: string,
+    newName: string
 ): Question[] {
     return [...questions].map(
         (ques: Question): Question =>
-            ques.id === targetId ? { ...ques, name: newName } : ques,
+            ques.id === targetId ? { ...ques, name: newName } : ques
     );
 }
 
@@ -224,7 +224,7 @@ export function renameQuestionById(
 export function changeQuestionTypeById(
     questions: Question[],
     targetId: number,
-    newQuestionType: QuestionType,
+    newQuestionType: QuestionType
 ): Question[] {
     let changedQues: Question | null = findQuestion(questions, targetId);
 
@@ -235,7 +235,7 @@ export function changeQuestionTypeById(
             changedQues2 = {
                 ...changedQues,
                 type: newQuestionType,
-                options: [],
+                options: []
             };
         } else {
             changedQues2 = { ...changedQues, type: newQuestionType };
@@ -243,7 +243,7 @@ export function changeQuestionTypeById(
 
         return [...questions].map(
             (ques: Question): Question =>
-                targetId === ques.id ? changedQues2 : ques,
+                targetId === ques.id ? changedQues2 : ques
         );
     } else {
         return [...questions];
@@ -264,7 +264,7 @@ export function editOption(
     questions: Question[],
     targetId: number,
     targetOptionIndex: number,
-    newOption: string,
+    newOption: string
 ): Question[] {
     let changedQues: Question | null = findQuestion(questions, targetId);
 
@@ -281,7 +281,7 @@ export function editOption(
 
         let newArr: Question[] = [...questions].map(
             (ques: Question): Question =>
-                targetId === ques.id ? changedQues2 : ques,
+                targetId === ques.id ? changedQues2 : ques
         );
 
         return newArr;
@@ -299,7 +299,7 @@ export function editOption(
 export function duplicateQuestionInArray(
     questions: Question[],
     targetId: number,
-    newId: number,
+    newId: number
 ): Question[] {
     let duplicateQ: Question[] = [...questions];
     let index = duplicateQ.findIndex((ques) => ques.id === targetId);

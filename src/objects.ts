@@ -8,7 +8,7 @@ import { Question, QuestionType } from "./interfaces/question";
 export function makeBlankQuestion(
     id: number,
     name: string,
-    type: QuestionType,
+    type: QuestionType
 ): Question {
     return {
         id: id,
@@ -18,7 +18,7 @@ export function makeBlankQuestion(
         options: [],
         expected: "",
         points: 1,
-        published: false,
+        published: false
     };
 }
 
@@ -89,7 +89,7 @@ export function toMarkdown(question: Question): string {
 
         clonedQuestion.options.map(
             (optn: string): string =>
-                (allQuestions = allQuestions + "- " + optn + "\n"),
+                (allQuestions = allQuestions + "- " + optn + "\n")
         );
 
         return (
@@ -171,7 +171,7 @@ export function mergeQuestion(
     id: number,
     name: string,
     contentQuestion: Question,
-    { points }: { points: number },
+    { points }: { points: number }
 ): Question {
     let concatQuestion: Question = { ...contentQuestion };
 
