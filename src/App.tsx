@@ -7,6 +7,7 @@ import { TwoDice } from "./components/TwoDice";
 import { CycleHoliday } from "./components/CycleHoliday";
 import { Counter } from "./components/Counter";
 
+// eslint-disable-next-line no-undef
 function App(): JSX.Element {
     return (
         <div className="App">
