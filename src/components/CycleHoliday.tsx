@@ -14,7 +14,7 @@ export function CycleHoliday(): React.JSX.Element {
         "♥️": "🤡",
         "🤡": "🦅",
         "🦅": "🎃",
-        "🎃": "🥳"
+        "🎃": "🥳",
     };
 
     const ALPHA_TRANSITIONS: Record<Holiday, Holiday> = {
@@ -22,7 +22,7 @@ export function CycleHoliday(): React.JSX.Element {
         "🎃": "🦅",
         "🦅": "🥳",
         "🥳": "♥️",
-        "♥️": "🤡"
+        "♥️": "🤡",
     };
 
     const [day, setDay] = useState<Holiday>("🥳");
