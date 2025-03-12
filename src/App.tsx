@@ -6,7 +6,11 @@ import { StartAttempt } from "./components/StartAttempt";
 import { TwoDice } from "./components/TwoDice";
 import { CycleHoliday } from "./components/CycleHoliday";
 import { Counter } from "./components/Counter";
+//^ task 8 ^
 import { DoubleHalf } from "./bad-components/DoubleHalf";
+import { ChooseTeam } from "./bad-components/ChooseTeam";
+import { ColoredBox } from "./bad-components/ColoredBox";
+//^ task 9 ^
 
 // eslint-disable-next-line no-undef
 function App(): JSX.Element {
@@ -16,6 +20,12 @@ function App(): JSX.Element {
                 UD CISC275 with React Hooks and TypeScript
             </header>
             <hr></hr>
+            <DoubleHalf></DoubleHalf>
+            <hr />
+            <ChooseTeam></ChooseTeam>
+            <hr />
+            <ColoredBox></ColoredBox>
+            <hr />
             <Counter></Counter>
             <hr />
             <RevealAnswer></RevealAnswer>
@@ -27,8 +37,6 @@ function App(): JSX.Element {
             <ChangeType></ChangeType>
             <hr />
             <CycleHoliday></CycleHoliday>
-            <hr />
-            <DoubleHalf></DoubleHalf>
         </div>
     );
 }
