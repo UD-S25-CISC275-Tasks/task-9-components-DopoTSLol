@@ -10,6 +10,7 @@ import { Counter } from "./components/Counter";
 import { DoubleHalf } from "./bad-components/DoubleHalf";
 import { ChooseTeam } from "./bad-components/ChooseTeam";
 import { ColoredBox } from "./bad-components/ColoredBox";
+import { ShoveBox } from "./bad-components/ShoveBox";
 //^ task 9 ^
 
 // eslint-disable-next-line no-undef
@@ -25,6 +26,8 @@ function App(): JSX.Element {
             <ChooseTeam></ChooseTeam>
             <hr />
             <ColoredBox></ColoredBox>
+            <hr />
+            <ShoveBox></ShoveBox>
             <hr />
             <Counter></Counter>
             <hr />
